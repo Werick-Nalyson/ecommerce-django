@@ -40,8 +40,6 @@ class Produto(models.Model):
             quality=50
         )
 
-        print('Redimentsionado com sucesso')
-
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
         max_image_size = 800
@@ -51,3 +49,18 @@ class Produto(models.Model):
 
     def __str__(self):
         return self.nome
+
+
+class Variacao(models.Model):
+    produto = models.ForeignKey(Produto, on_delete=models.CASCADE)
+    nome = models.CharField(max_length=50, blank=True, null=True)
+    preco = models.FloatField()
+    preco_promocional = models.FloatField(default=0)
+    estoque = models.PositiveIntegerField(default=1)
+
+    def __str__(self):
+        return self.nome or self.produto.nome
+
+    class Meta:
+        verbose_name = 'Variação'
+        verbose_name_plural = 'Variações'
